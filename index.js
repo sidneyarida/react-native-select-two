@@ -67,6 +67,9 @@ class Select2 extends Component {
     }
 
     cancelSelection() {
+        let {
+            onSearchKeyword,
+        } = this.props;
         let { data, preSelectedItem } = this.state;
         data.map(item => {
             item.checked = false;
