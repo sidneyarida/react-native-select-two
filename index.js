@@ -78,6 +78,7 @@ class Select2 extends Component {
             }
         });
         this.setState({ data, show: false, keyword: '', selectedItem: preSelectedItem });
+        onSearchKeyword && onSearchKeyword('');
     }
 
     onItemSelected = (item, isSelectSingle) => {
@@ -127,7 +128,7 @@ class Select2 extends Component {
 
     render() {
         let {
-            style, modalStyle, title, onSelect, onRemoveItem, popupTitle, colorTheme,
+            style, modalStyle, title, onSelect, onRemoveItem, onSearchKeyword, popupTitle, colorTheme,
             isSelectSingle, cancelButtonText, selectButtonText, searchPlaceHolderText,
             selectedTitleStyle, buttonTextStyle, buttonStyle, showSearchBox
         } = this.props;
@@ -163,7 +164,10 @@ class Select2 extends Component {
                                     style={[styles.inputKeyword, this.defaultFont]}
                                     placeholder={searchPlaceHolderText}
                                     selectionColor={colorTheme}
-                                    onChangeText={keyword => this.setState({ keyword })}
+                                    onChangeText={keyword => {
+                                        this.setState({ keyword });
+                                        onSearchKeyword && onSearchKeyword(keyword);
+                                    }}
                                     onFocus={() => {
                                         Animated.spring(this.animatedHeight, {
                                             toValue: INIT_HEIGHT + (Platform.OS === 'ios' ? height * 0.2 : 0),
@@ -318,6 +322,7 @@ Select2.propTypes = {
     title: PropTypes.string,
     onSelect: PropTypes.func,
     onRemoveItem: PropTypes.func,
+    onSearchKeyword: PropTypes.func,
     popupTitle: PropTypes.string,
     colorTheme: PropTypes.string,
     isSelectSingle: PropTypes.bool,
